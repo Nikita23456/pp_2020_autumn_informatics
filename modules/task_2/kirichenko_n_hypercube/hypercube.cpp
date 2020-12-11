@@ -18,13 +18,15 @@ int degTwo(int deg) {
         a *= 2;
     return a;
 }
-int* createArr(int n, int a) {
-    int* arr = new int[n];
-    for (int i = 0; i < n; i++) {
-        arr[i] = a;
-    }
-    return arr;
-}
+
+//int* createArr(int n, int a) {
+   // int* arr = new int[n];
+   // for (int i = 0; i < n; i++) {
+    //    arr[i] = a;
+   // }
+  //  return arr;
+//}
+
 MPI_Comm hypercube(int n) {
     if (n < 1) {
         throw "Error size";
@@ -32,10 +34,17 @@ MPI_Comm hypercube(int n) {
     int size;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     if (size == degTwo(n)) {
-        int* dim = createArr(n, 2);
-        int* per = createArr(n, 1);
+        int* dim = new int[n];
+        int* per = new int[n];
+        
+        for (int i = 0; i < n; i++) {
+            dim[i] = 2;
+            per[i] = 1;
+        }
         MPI_Comm cub;
         MPI_Cart_create(MPI_COMM_WORLD, n, dim, per, 1, &cub);
+        delete[] dim;
+        delete[] per;
         return cub;
     } else {
         return MPI_COMM_WORLD;
